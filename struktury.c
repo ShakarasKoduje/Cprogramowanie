@@ -1,12 +1,16 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include "struktury.h"
+
+/*
 typedef enum stan_lokalizacji stan_lokalizacji;
 enum stan_lokalizacji{
     NIEODWIEDZONA,
     POWALCE,
     ODWIEDZONA
 };
+
 
 typedef struct lokalizacja_t lokalizacja_t;
 typedef struct punkt_t punkt_t;
@@ -31,6 +35,11 @@ struct postac_t{
     char plik[100];
 };
 
+/*
+
+PROGRAM GLOWYN
+
+================================*/
 
 int main(){
     int ch;
