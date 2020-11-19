@@ -28,6 +28,7 @@ struct lokalizacja_t{
     lokalizacja_t *wschod;
     lokalizacja_t *poludnie;
     lokalizacja_t *polnoc;
+    int liczbaSasiadow;
     lokalizacja_t **sasiedzi;
 
 };
@@ -37,4 +38,9 @@ struct postac_t{
     lokalizacja_t aktualna_pozycja;
     char opis[200];
     char plik[100];
+    int walka;
+    int sila;
+    int wytrzymalosc;
+    int zywotnosc;
+    
 };

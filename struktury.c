@@ -46,6 +46,7 @@ PROGRAM GLOWYN
 void WypiszSasiadow(const lokalizacja_t);
 
 int main(){
+    srand(time(NULL)); //ziarno losu ;)
     int ch;
     char buff[3][500];
     char buffer[500];
@@ -166,6 +167,17 @@ int main(){
     -------------------------------------*/   
 
     postac_t ork; ork.aktualna_pozycja = aktualnaLok; ork.nazwa = "Ork";
+    ork.walka = 35;
+    ork.sila = 4;
+
+
+    /*-------------------------------------
+
+    Operacja na pliku z opisem (testowe)
+    opis zawarty w pliku przypisywany do 
+    zmiennej z nazwa postaci (w tym wypadku orka);
+
+    -------------------------------------*/
     char *nazwa_pliku=(char *)malloc(100 * sizeof(char));
     //strcpy(nazwa_pliku, "");
     strcat(nazwa_pliku, ork.nazwa);
@@ -204,8 +216,18 @@ int main(){
     //aktualnaLok = *hol.wschod;
     //printf("Aktualna lokalizacja: %s w punkcie {%d,%d}\n", aktualnaLok.nazwa, aktualnaLok.punkt.x, aktualnaLok.punkt.y);
    
-    
-    printf("%s, %s Znajduje sie w %s pozycja:{%d,%d}", ork.nazwa, ork.opis, ork.aktualna_pozycja.nazwa, ork.aktualna_pozycja.punkt.x, ork.aktualna_pozycja.punkt.y);
+    int rzut = rand()%100 +1;
+    printf("\tWynik testu: %d\n", rzut);   
+    int dziesiatki = (ork.walka/10 - rzut/10);
+    printf("DZIESIATKI: %d\n", dziesiatki);
+    if (rzut <= ork.walka){
+        printf("ORK sila: %d przywalil za: %d\n", ork.sila, ork.sila+dziesiatki);
+    }
+
+    printf("%s, %s\n, ktory ma walke i %d: %s Znajduje sie w %s pozycja:{%d,%d}", ork.nazwa, ork.opis, 
+                    ork.walka, (rzut <= ork.walka) ? "TRAFIL!" : "CHYBIL",
+                    ork.aktualna_pozycja.nazwa, 
+                    ork.aktualna_pozycja.punkt.x,ork.aktualna_pozycja.punkt.y);
     while((ch = getchar()) != '\n');
     return 0;
 
