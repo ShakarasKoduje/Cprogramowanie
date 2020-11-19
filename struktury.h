@@ -24,6 +24,10 @@ struct lokalizacja_t{
     punkt_t punkt;
     char *nazwa;
     stan_lokalizacji stan;
+    lokalizacja_t *zachod;
+    lokalizacja_t *wschod;
+    lokalizacja_t *poludnie;
+    lokalizacja_t *polnoc;
 
 };
 

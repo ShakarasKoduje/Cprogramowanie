@@ -47,6 +47,13 @@ int main(){
     char buffer[500];
    // char calyopis[1500];
     char *calyopis=(char *)malloc(1500 * sizeof(char));
+
+    /*------------------------------------
+
+    Tworzenie 'obiektow' struktur lokalizacja_t,
+    punkt_t, 
+
+    -------------------------------------*/
     lokalizacja_t lazienka = {.stan=NIEODWIEDZONA, 
     .nazwa = "Lazienka"};
     punkt_t p_hol = {.x = 124, .y = 12};
@@ -58,12 +65,16 @@ int main(){
     punkt_t p2; p2.x =17; p2.y=91;
 
     lazienka.punkt = p;
+    lazienka.zachod = &hol;
+    hol.wschod = &lazienka;
+    printf("Na zachod od %s jest %s\n", lazienka.nazwa, lazienka.zachod->nazwa);
 
     //lazienka.nazwa = "Lazienka";
     punkt_t aktualny;
 
     lokalizacja_t aktualnaLok;
-    aktualnaLok = lazienka;
+
+    aktualnaLok = *lazienka.zachod;
     
     aktualny = p;
     printf("AKTUALNY %d/%d\n",aktualny.x, aktualny.y);  
@@ -74,9 +85,13 @@ int main(){
     stan= NIEODWIEDZONA;
     printf("%d\n", stan);
     
-   
+    /*------------------------------------
 
-    postac_t ork; ork.aktualna_pozycja = lazienka; ork.nazwa = "Ork";
+    Tworzenie 'obiektow' struktur postac_t
+
+    -------------------------------------*/   
+
+    postac_t ork; ork.aktualna_pozycja = aktualnaLok; ork.nazwa = "Ork";
     char *nazwa_pliku=(char *)malloc(100 * sizeof(char));
     //strcpy(nazwa_pliku, "");
     strcat(nazwa_pliku, ork.nazwa);
@@ -111,7 +126,7 @@ int main(){
     free(napis);
     fclose(plik);
     printf("Aktualna lokalizacja: %s w punkcie {%d,%d}\n", aktualnaLok.nazwa, aktualnaLok.punkt.x, aktualnaLok.punkt.y);
-    aktualnaLok = hol;
+    aktualnaLok = *hol.wschod;
     printf("Aktualna lokalizacja: %s w punkcie {%d,%d}\n", aktualnaLok.nazwa, aktualnaLok.punkt.x, aktualnaLok.punkt.y);
    
     
