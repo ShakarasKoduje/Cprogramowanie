@@ -56,8 +56,9 @@ int main(){
     -------------------------------------*/
     lokalizacja_t lazienka = {.stan=NIEODWIEDZONA, 
     .nazwa = "Lazienka"};
-    punkt_t p_hol = {.x = 124, .y = 12};
+    punkt_t p_hol = {.x = 124, .y = 12}; punkt_t p_wych = {.x = 14, .y = 129};
     lokalizacja_t hol = {.nazwa = "Hol", .stan=NIEODWIEDZONA, .punkt = p_hol};
+    lokalizacja_t wychodek = {.nazwa = "Wychodek", .stan=NIEODWIEDZONA, .punkt = p_wych};
     if(lazienka.stan == NIEODWIEDZONA){
         printf("=========Stan lokalizacji %d=========\n", lazienka.stan);
     }
@@ -68,6 +69,20 @@ int main(){
     lazienka.zachod = &hol;
     hol.wschod = &lazienka;
     printf("Na zachod od %s jest %s\n", lazienka.nazwa, lazienka.zachod->nazwa);
+
+    //proba stworzenia tablicy sasiadow i zapelnienia jej, lazienka.sasiedzi to tablica z **
+    lazienka.sasiedzi = (lokalizacja_t **)malloc(6);
+    lazienka.sasiedzi[0] = &wychodek;
+    printf("Na poludnie od %s jest %s w pozycji {%d;%d}\n", lazienka.nazwa, 
+    lazienka.sasiedzi[0]->nazwa, lazienka.sasiedzi[0]->punkt.x, lazienka.sasiedzi[0]->punkt.y);
+    /*
+    Zrobic trzeba enum z kierunkami swiata, pozniej sasiadow w petli, i pierwsze cztery
+    kierunki po enumie (0,1,2,3), tak zeby zawsze byly przypisane w pierwszej kolejnosci,
+    a ewentualni inni sasiedzi od 4 wbijani.
+
+    */
+
+    free(lazienka.sasiedzi);
 
     //lazienka.nazwa = "Lazienka";
     punkt_t aktualny;

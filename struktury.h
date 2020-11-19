@@ -28,6 +28,7 @@ struct lokalizacja_t{
     lokalizacja_t *wschod;
     lokalizacja_t *poludnie;
     lokalizacja_t *polnoc;
+    lokalizacja_t **sasiedzi;
 
 };
 
