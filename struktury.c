@@ -1,7 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include <time.h> 
 #include "struktury.h"
+
 
 /*
 typedef enum stan_lokalizacji stan_lokalizacji;
@@ -41,12 +43,28 @@ PROGRAM GLOWYN
 
 ================================*/
 
+void WypiszSasiadow(const lokalizacja_t);
+
 int main(){
     int ch;
     char buff[3][500];
     char buffer[500];
    // char calyopis[1500];
     char *calyopis=(char *)malloc(1500 * sizeof(char));
+    enum kierunki kierunek;
+    kierunek = ZACHOD;
+    //kierunek = 9;
+    switch (kierunek)
+    {
+    case ZACHOD:
+        printf("Kierunek to Zachod %d\n", kierunek);
+        break;
+    case 9:
+        printf("Kierunek to Loch %d\n", kierunek);
+        break;    
+    default:
+        break;
+    }
 
     /*------------------------------------
 
@@ -54,11 +72,20 @@ int main(){
     punkt_t, 
 
     -------------------------------------*/
-    lokalizacja_t lazienka = {.stan=NIEODWIEDZONA, 
-    .nazwa = "Lazienka"};
+    punkt_t aktualny;
+    lokalizacja_t aktualnaLok;
+    
+    lokalizacja_t lazienka = {.stan=NIEODWIEDZONA, .nazwa = "Lazienka"};
+    lazienka.liczbaSasiadow = 6;
     punkt_t p_hol = {.x = 124, .y = 12}; punkt_t p_wych = {.x = 14, .y = 129};
     lokalizacja_t hol = {.nazwa = "Hol", .stan=NIEODWIEDZONA, .punkt = p_hol};
     lokalizacja_t wychodek = {.nazwa = "Wychodek", .stan=NIEODWIEDZONA, .punkt = p_wych};
+    punkt_t p_pok = {.x = 7, .y = 7};
+    lokalizacja_t pokoj = {.nazwa = "pokoj", .stan=NIEODWIEDZONA, .punkt = p_pok};
+    punkt_t p_syp = {.x = 1, .y = 9};
+    lokalizacja_t sypialnia = {.nazwa = "sypialnia", .stan=NIEODWIEDZONA, .punkt = p_syp};
+    punkt_t p_skl = {.x = 0, .y = 12};
+    lokalizacja_t skladzik = {.nazwa = "skladzik", .stan=NIEODWIEDZONA, .punkt = p_skl};
     if(lazienka.stan == NIEODWIEDZONA){
         printf("=========Stan lokalizacji %d=========\n", lazienka.stan);
     }
@@ -67,30 +94,62 @@ int main(){
 
     lazienka.punkt = p;
     lazienka.zachod = &hol;
+    lazienka.polnoc = &hol;
+    lazienka.poludnie = &wychodek;
     hol.wschod = &lazienka;
     printf("Na zachod od %s jest %s\n", lazienka.nazwa, lazienka.zachod->nazwa);
 
     //proba stworzenia tablicy sasiadow i zapelnienia jej, lazienka.sasiedzi to tablica z **
-    lazienka.sasiedzi = (lokalizacja_t **)malloc(6);
-    lazienka.sasiedzi[0] = &wychodek;
-    printf("Na poludnie od %s jest %s w pozycji {%d;%d}\n", lazienka.nazwa, 
-    lazienka.sasiedzi[0]->nazwa, lazienka.sasiedzi[0]->punkt.x, lazienka.sasiedzi[0]->punkt.y);
-    /*
-    Zrobic trzeba enum z kierunkami swiata, pozniej sasiadow w petli, i pierwsze cztery
-    kierunki po enumie (0,1,2,3), tak zeby zawsze byly przypisane w pierwszej kolejnosci,
-    a ewentualni inni sasiedzi od 4 wbijani.
 
-    */
+    lazienka.sasiedzi = (lokalizacja_t **)malloc(lazienka.liczbaSasiadow * sizeof(lokalizacja_t *));
+    int i = 0;
+    lazienka.sasiedzi[i] = lazienka.zachod; 
+    int rozmiar = sizeof(*lazienka.sasiedzi)/sizeof(lazienka.sasiedzi[0]);
+    printf("ROZMIAR TABLICY: %d\n", rozmiar);
+    i++;
+    lazienka.sasiedzi[i] = lazienka.poludnie;
+    i++;
+    lazienka.sasiedzi[i] = lazienka.polnoc;
+    i++;
+    lazienka.sasiedzi[i] = &pokoj;
+    i++;
+    lazienka.sasiedzi[i] = &sypialnia;
+    i++;
+    lazienka.sasiedzi[i] = &skladzik;    
 
-    free(lazienka.sasiedzi);
+   
+   int wybor = 0; 
 
-    //lazienka.nazwa = "Lazienka";
-    punkt_t aktualny;
 
-    lokalizacja_t aktualnaLok;
+    while(1){
+        WypiszSasiadow(lazienka);
+        scanf("%d", &wybor); while((ch = getchar())!= '\n');
+        if(wybor<lazienka.liczbaSasiadow) {
+            printf("Poszedles do %d\n", wybor);
+            getchar();
+            printf("Poszedles do %s\n", lazienka.sasiedzi[wybor]->nazwa);
+            lazienka.sasiedzi[wybor]->stan = ODWIEDZONA;
+            //getchar();
+            system("clear");
+            break;
+        }
+        else if(wybor == lazienka.liczbaSasiadow){
+            printf("Pozostales w %s\n", lazienka.nazwa);
+            getchar();
+            system("clear");
+            break;            
+        }
+        //getchar();
+        system("clear");
+    }
 
-    aktualnaLok = *lazienka.zachod;
-    
+
+    //aktualnaLok = *lazienka.zachod;
+    if(wybor < 6){
+        aktualnaLok = *lazienka.sasiedzi[wybor];
+    }else{
+        aktualnaLok = lazienka;
+    }
     aktualny = p;
     printf("AKTUALNY %d/%d\n",aktualny.x, aktualny.y);  
     //free(aktualny); //gdyby akturalny byl pointerem
@@ -140,13 +199,30 @@ int main(){
     free(calyopis);
     free(napis);
     fclose(plik);
+    free(lazienka.sasiedzi);
     printf("Aktualna lokalizacja: %s w punkcie {%d,%d}\n", aktualnaLok.nazwa, aktualnaLok.punkt.x, aktualnaLok.punkt.y);
-    aktualnaLok = *hol.wschod;
-    printf("Aktualna lokalizacja: %s w punkcie {%d,%d}\n", aktualnaLok.nazwa, aktualnaLok.punkt.x, aktualnaLok.punkt.y);
+    //aktualnaLok = *hol.wschod;
+    //printf("Aktualna lokalizacja: %s w punkcie {%d,%d}\n", aktualnaLok.nazwa, aktualnaLok.punkt.x, aktualnaLok.punkt.y);
    
     
     printf("%s, %s Znajduje sie w %s pozycja:{%d,%d}", ork.nazwa, ork.opis, ork.aktualna_pozycja.nazwa, ork.aktualna_pozycja.punkt.x, ork.aktualna_pozycja.punkt.y);
     while((ch = getchar()) != '\n');
     return 0;
+
+}
+
+void WypiszSasiadow(const lokalizacja_t t){
+    
+    puts("Dokad sie udajesz? ...");
+    for(int j = 0;j<t.liczbaSasiadow+1 ;j++){   
+        if(j<t.liczbaSasiadow){
+            printf("%d : do %s {%d;%d}\n", j, t.sasiedzi[j]->nazwa, 
+                                                        t.sasiedzi[j]->punkt.x, 
+                                                    t.sasiedzi[j]->punkt.y);
+            }
+        else{
+            printf("%d : Pozostan na miejscu w %s\n", j, t.nazwa);
+            }
+        }
 
 }
