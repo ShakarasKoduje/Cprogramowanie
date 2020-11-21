@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stdlib.h>
 #include "enumy.h"
 /*
 typedef enum stan_lokalizacji stan_lokalizacji;
@@ -23,6 +24,7 @@ struct punkt_t{
 struct lokalizacja_t{
     punkt_t punkt;
     char *nazwa;
+    char *opis;
     stan_lokalizacji stan;
     lokalizacja_t *zachod;
     lokalizacja_t *wschod;
@@ -35,8 +37,10 @@ struct lokalizacja_t{
 
 struct postac_t{
     char *nazwa;
+    char nazwa2[100];
     lokalizacja_t aktualna_pozycja;
-    char opis[200];
+    char opis[500];
+
     char plik[100];
     int walka;
     int sila;
@@ -44,3 +48,4 @@ struct postac_t{
     int zywotnosc;
     
 };
+
