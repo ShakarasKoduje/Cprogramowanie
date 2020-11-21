@@ -21,23 +21,24 @@ int main(){
     int index = 0;
     strcpy(ork, "Ork ");
     strcpy(ogr, "Ogr ");
-postac_t *wrogowie = (postac_t*)malloc(3*sizeof(postac_t));
+    postac_t *wrogowie = (postac_t*)malloc(3*sizeof(postac_t));
 
 
     for(int i=0; i<3; i++){
         
         postac_t p1 = {.sila = rand()%100+1};
 
-        wrogowie[0] = p1; 
-        wrogowie[0].nazwa = (char*)malloc(100*sizeof(char));
-        strcpy(wrogowie[0].nazwa, ogr);     
-        strcpy(wrogowie[0].nazwa2, ork);
+        wrogowie[i] = p1; 
+        wrogowie[i].nazwa = (char*)malloc(100*sizeof(char));
+        strcpy(wrogowie[i].nazwa, ogr);     
+        strcpy(wrogowie[i].nazwa2, ork);
         snprintf(str2, sizeof(str2),"%d", i);
-        strcat(wrogowie[0].nazwa, str2);
-        strcat(wrogowie[0].nazwa2, str2);
+        strcat(wrogowie[i].nazwa, str2);
+        strcat(wrogowie[i].nazwa2, str2);
         
-        printf("wrog: %s \t" , wrogowie[0].nazwa2);
-        printf("wrog: %s \t" , wrogowie[0].nazwa);
+        printf("wrog: %s o sile %d \t" , wrogowie[i].nazwa2, wrogowie[i].sila);
+        printf("wrog: %s o sile %d \t" , wrogowie[i].nazwa, wrogowie[i].sila);
+        puts(" ");
 
     }
 
@@ -50,7 +51,7 @@ postac_t *wrogowie = (postac_t*)malloc(3*sizeof(postac_t));
     for(int i=0; i<3;i++){
 
         postaci[i] = (postac_t*)malloc(6*sizeof(postac_t));
-        printf("\nwiersz %d", i);
+        printf("\nwiersz %d \n", i);
         for(int j=0; j< 6; j++){            
 
             postac_t p={.sila = rand()%100+1};
@@ -60,8 +61,9 @@ postac_t *wrogowie = (postac_t*)malloc(3*sizeof(postac_t));
             strcat(p.nazwa2, str);
             postaci[i][j] = p;
 
-            printf("postac %s o sile: %d\t",postaci[i][j].nazwa2, postaci[i][j].sila);
+            printf("\tpostac %s o sile: %d",postaci[i][j].nazwa2, postaci[i][j].sila);
         }
+        puts(" ");
         
     }
 
