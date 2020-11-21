@@ -22,23 +22,29 @@ int main(){
     strcpy(ork, "Ork ");
     strcpy(ogr, "Ogr ");
     postac_t *wrogowie = (postac_t*)malloc(3*sizeof(postac_t));
-
-
-    for(int i=0; i<3; i++){
+    przedmiot_t maczuga = {.nazwa = "Maczuga", .opis="prymitywna, ciezka nabita ostrymi, zardzewialymi cwiekami maczuge.\n", .obrazenia = 4};
+    int PS=0; //punkty sukcesu
+    for(int i=0, test = 0; i<3; i++){
         
-        postac_t p1 = {.sila = rand()%100+1};
+        postac_t p1 = {.sila = rand()%100+1, .walka = rand()%100+1};
 
         wrogowie[i] = p1; 
+        wrogowie[i].bron = maczuga;
         wrogowie[i].nazwa = (char*)malloc(100*sizeof(char));
         strcpy(wrogowie[i].nazwa, ogr);     
         strcpy(wrogowie[i].nazwa2, ork);
         snprintf(str2, sizeof(str2),"%d", i);
         strcat(wrogowie[i].nazwa, str2);
         strcat(wrogowie[i].nazwa2, str2);
-        
-        printf("wrog: %s o sile %d \t" , wrogowie[i].nazwa2, wrogowie[i].sila);
-        printf("wrog: %s o sile %d \t" , wrogowie[i].nazwa, wrogowie[i].sila);
+        test = rand()%100+1;
+        PS = PS + wrogowie[i].walka/10 - test/10;
+           
+        //printf("wrog: %s o sile %d \t" , wrogowie[i].nazwa2, wrogowie[i].sila);
+        printf("wrog: %s o sile %d PS: %d\t" , wrogowie[i].nazwa, wrogowie[i].sila, PS);
+        if (PS > 0) printf("%s rabnal za %d ", wrogowie[i].nazwa, PS + wrogowie[i].sila/10 + wrogowie[i].bron.obrazenia); 
+        printf("wrog: %s dzierzy %s bonus obrazen broni %d + %d bonusu sily\t" , wrogowie[i].nazwa, wrogowie[i].bron.opis, wrogowie[i].bron.obrazenia, wrogowie[i].sila/10);
         puts(" ");
+        PS = 0;
 
     }
 
